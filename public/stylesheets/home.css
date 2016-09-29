@@ -52,7 +52,7 @@ html, body {
 }
 .people-list ul {
   padding: 20px;
-  height: 770px;
+  /*height: 770px;*/
 }
 .people-list ul li {
   padding-bottom: 20px;
