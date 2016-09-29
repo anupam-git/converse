@@ -1,5 +1,24 @@
+var mongo = process.env.VCAP_SERVICES;
 var mongoose = require( 'mongoose' );
-var dbURI = 'mongodb://localhost:27017/converseDB';
+var dbURI = "";
+
+if (mongo) {
+  var env = JSON.parse(mongo);
+
+	if (env['mongodb-2.4']) {
+    mongo = env['mongodb-2.4'][0]['credentials'];
+
+		if (mongo.url) {
+      dbURI = mongo.url;
+    }
+	}
+	else {
+		dbURI = 'mongodb://localhost:27017/converseDB';
+	}
+}
+else {
+	dbURI = 'mongodb://localhost:27017/converseDB';
+}
 
 mongoose.connect(dbURI);
 
