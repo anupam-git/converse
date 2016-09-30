@@ -35,7 +35,7 @@ router.post("/send", function(req, res) {
 						pubnub.publish({
 					    channel : req.body.to,
 					    message : {
-								data: translation,
+								data: translation.translations.translation,
 								dataOriginal: req.body.message,
 								senderName: req.body.senderName,
 								sender: req.body.sender
