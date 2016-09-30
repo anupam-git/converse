@@ -25,6 +25,9 @@ html, body {
 	display: flex;
 	flex-direction: row;
 }
+.container > .chat {
+	border-radius: 0;
+}
 
 .people-list {
   padding: 20px;
@@ -122,11 +125,12 @@ html, body {
 .chat .chat-header .chat-num-messages {
   color: #92959E;
 }
-.chat .chat-header .fa-star {
+.chat .chat-header .fa-phone {
   float: right;
   color: #D8DADF;
   font-size: 20px;
   margin-top: 12px;
+	vertical-align: middle;
 }
 .chat .chat-history {
   padding: 30px 30px 20px;
@@ -142,6 +146,22 @@ html, body {
 .chat .chat-history .message-data-time {
   color: #a8aab1;
   padding-left: 6px;
+}
+.chat .chat-history .analyze-tone {
+	color: #a8aab1;
+  padding-left: 6px;
+	cursor: pointer;
+}
+.chat .chat-history .message-data-tone {
+	display: none;
+  position: absolute;
+  width: 400px;
+  padding: 10px;
+  background: #6A6C75;
+  color: #eee;
+	border-radius: 3px;
+  font-size: 90%;
+	z-index: 999;
 }
 .chat .chat-history .message {
   color: white;

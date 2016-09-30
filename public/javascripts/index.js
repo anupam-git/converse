@@ -18,6 +18,20 @@
       this.$button.on('click', this.addMessage.bind(this));
       this.$textarea.on('keyup', this.addMessageEnter.bind(this));
 
+			$(document).on("mouseenter", ".analyze-tone", function(e) {
+		    $(this).parent().find(".message-data-tone").show();
+		  });
+			$(document).on("mouseleave", ".analyze-tone", function() {
+		    $(this).parent().find(".message-data-tone").hide();
+		  });
+
+			$(document).on("mousemove", ".analyze-tone", function(e) {
+				var moveLeft = 20;
+				var moveDown = 10;
+
+				$(this).parent().find(".message-data-tone").css('top', e.pageY + moveDown).css('left', e.pageX + moveLeft);
+			});
+
 			_this = this;
 			pubnubMessageListener = this.pubnubMessageListener;
 
@@ -103,9 +117,12 @@
 				var templateResponse = Handlebars.compile( $("#message-response-template").html());
 				var contextResponse = {
 					senderName: msg.senderName,
-					time: pubTT,
-					message: msg.data
+					time: _this.getCurrentTime(),
+					message: msg.data,
+					emotion: msg.emotion
 				};
+
+				console.log(msg.emotion);
 
 				_this.$chatHistoryList.append(templateResponse(contextResponse));
 				_this.scrollToBottom();

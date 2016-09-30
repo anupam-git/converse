@@ -13,29 +13,6 @@ router.get("/login", function(req, res, next) {
 * Authenticate User
 **/
 router.post("/login", function(req, res, next) {
-  // User.findOne({
-	// 	email: req.body.e,
-	// 	password: req.body.p
-	// }, function(err, user) {
-	// 	if (err) {
-	// 		next(err)
-	// 	}
-	// 	else {
-	// 		if (user === null) {
-	// 			var error = new Error("Authentication Error");
-	// 			error.status = 550;
-	//
-	// 			next(error);
-	// 		}
-	// 		else {
-	// 			req.session.email = req.body.e;
-	// 			req.session.name = user.name;
-	// 			req.session.userid = user._id;
-	// 			res.redirect("/");
-	// 		}
-	// 	}
-	// })
-
 	if (req.body.e == "anupam@turret.in" && req.body.p == "password") {
 		req.session.email = req.body.e;
 		req.session.name = "Anupam Basak";
@@ -64,7 +41,9 @@ router.post("/login", function(req, res, next) {
 * Logout User
 **/
 router.get("/logout", function(req, res, next) {
-  res.render("login");
+	req.session.destroy();
+	
+  res.redirect("login")
 });
 
 
