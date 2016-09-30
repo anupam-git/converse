@@ -6,6 +6,6 @@ var express = require('express'),
 			subscribeKey: "sub-c-0f135c70-8693-11e6-b8cb-02ee2ddab7fe"
 		})
 
-router.post("/send", function(req, res) {
-	
+router.post("/send", function(req, res) { 
+
 })
