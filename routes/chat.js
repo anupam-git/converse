@@ -27,7 +27,7 @@ router.post("/send", function(req, res) {
 			    text: req.body.message+"",
 					source: identifiedLanguages.languages[0].language,
 			    target: 'en'
-			  }, function(err, translation) {console.log(translation);
+			  }, function(err, translation) {console.log(translation.translations[0].translation);
 			    if (err) {
 			      console.log(err)
 					}
@@ -35,7 +35,7 @@ router.post("/send", function(req, res) {
 						pubnub.publish({
 					    channel : req.body.to,
 					    message : {
-								data: translation.translations.translation,
+								data: translation.translations[0].translation,
 								dataOriginal: req.body.message,
 								senderName: req.body.senderName,
 								sender: req.body.sender
