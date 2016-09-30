@@ -39,14 +39,14 @@ router.post("/login", function(req, res, next) {
 	if (req.body.e == "anupam@turret.in" && req.body.p == "password") {
 		req.session.email = req.body.e;
 		req.session.name = "Anupam Basak";
-		req.session.userid = "57ed7fbf4fcbc132e36bd49e";
+		req.session.userid = "1";
 
 		res.redirect("/");
 	}
 	else if (req.body.e == "probal@turret.in" && req.body.p == "password") {
 		req.session.email = req.body.e;
 		req.session.name = "Probal Basak";
-		req.session.userid = "57ed7fbf4fcbc132e36bd49f";
+		req.session.userid = "2";
 
 		res.redirect("/");
 	}

@@ -1,15 +1,15 @@
 (function(){
-  
+
   var chat = {
     messageToSend: '',
-    messageResponses: [
-      'Why did the web developer leave the restaurant? Because of the table layout.',
-      'How do you comfort a JavaScript bug? You console it.',
-      'An SQL query enters a bar, approaches two tables and asks: "May I join you?"',
-      'What is the most used language in programming? Profanity.',
-      'What is the object-oriented way to become wealthy? Inheritance.',
-      'An SEO expert walks into a bar, bars, pub, tavern, public house, Irish pub, drinks, beer, alcohol'
-    ],
+		messageFrom: {
+			msg: "",
+			time: "",
+			senderName: "",
+			sender: "",
+			senderChannel: ""
+		},
+		pubnubToChannel: '',
     init: function() {
       this.cacheDOM();
       this.bindEvents();
@@ -19,44 +19,70 @@
       this.$chatHistory = $('.chat-history');
       this.$button = $('button');
       this.$textarea = $('#message-to-send');
+			this.$peopleList = $('#people-list .list');
       this.$chatHistoryList =  this.$chatHistory.find('ul');
     },
     bindEvents: function() {
       this.$button.on('click', this.addMessage.bind(this));
       this.$textarea.on('keyup', this.addMessageEnter.bind(this));
+
+			_this = this;
+			pubnubMessageListener = this.pubnubMessageListener;
+
+			this.pubnub.addListener({
+				message: function(m) {
+					pubnubMessageListener(_this, m)
+				},
+				status: this.pubnubStatusListener
+			})
+			this.pubnub.subscribe({
+				channels: pubnubFromChannels
+			})
     },
     render: function() {
       this.scrollToBottom();
       if (this.messageToSend.trim() !== '') {
         var template = Handlebars.compile( $("#message-template").html());
-        var context = { 
+        var context = {
           messageOutput: this.messageToSend,
+					senderName: senderName,
           time: this.getCurrentTime()
         };
 
         this.$chatHistoryList.append(template(context));
         this.scrollToBottom();
         this.$textarea.val('');
-        
-        // responses
-        var templateResponse = Handlebars.compile( $("#message-response-template").html());
-        var contextResponse = { 
-          response: this.getRandomItem(this.messageResponses),
-          time: this.getCurrentTime()
-        };
-        
-        setTimeout(function() {
-          this.$chatHistoryList.append(templateResponse(contextResponse));
-          this.scrollToBottom();
-        }.bind(this), 1500);
-        
+
+				this.sendChatToServer(this.messageToSend, senderName);
+				this.messageToSend = "";
       }
-      
+			else if (this.messageFrom.msg.trim() !== '') {console.log("response", this.messageFrom.sender, sender);
+				if (this.messageFrom.sender !== sender) {
+					var templateResponse = Handlebars.compile( $("#message-response-template").html());
+	        var contextResponse = {
+	          senderName: this.messageFrom.senderName,
+	          time: this.messageFrom.time,
+						message: this.messageFrom.msg
+	        };
+
+	        this.$chatHistoryList.append(templateResponse(contextResponse));
+	        this.scrollToBottom();
+				}
+
+				this.messageFrom = {
+					msg: "",
+					time: "",
+					senderName: "",
+					sender: "",
+					senderChannel: ""
+				};
+			}
     },
-    
+
     addMessage: function() {
-      this.messageToSend = this.$textarea.val()
-      this.render();         
+      this.messageToSend = this.$textarea.val();
+			this.pubnubToChannel = this.$peopleList.find(".active").attr("data-pubnub-channel");
+      this.render();
     },
     addMessageEnter: function(event) {
         // enter was pressed
@@ -73,18 +99,52 @@
     },
     getRandomItem: function(arr) {
       return arr[Math.floor(Math.random()*arr.length)];
-    }
-    
+    },
+		sendChatToServer: function(message, senderName) {
+			$.ajax({
+				method: "post",
+				url: "/chat/send",
+				data: {
+					to: this.pubnubToChannel,
+					message: message,
+					sender: sender,
+					senderName: senderName
+				}
+			})
+		},
+		pubnub: new PubNub({
+			publishKey: "pub-c-2e9cb451-e0f7-4800-a6d0-6267c7319336",
+			subscribeKey: "sub-c-0f135c70-8693-11e6-b8cb-02ee2ddab7fe"
+		}),
+		pubnubStatusListener: function(s) {
+			console.log("PubNub Status Listener : "+JSON.stringify(s));
+		},
+		pubnubMessageListener: function(_this, m) {
+			var channelName = m.actualChannel;
+			var channelGroup = m.subscribedChannel;
+			var pubTT = m.timetoken;
+			var msg = m.message;
+
+			_this.messageFrom = {
+				msg: msg.data,
+				time: pubTT,
+				sender: msg.sender,
+				senderName: msg.senderName,
+				senderChannel: channelName
+			}
+
+			_this.render();
+		}
   };
-  
+
   chat.init();
-  
+
   var searchFilter = {
     options: { valueNames: ['name'] },
     init: function() {
       var userList = new List('people-list', this.options);
       var noItems = $('<li id="no-items-found">No items found</li>');
-      
+
       userList.on('updated', function(list) {
         if (list.matchingItems.length === 0) {
           $(list.list).append(noItems);
@@ -94,7 +154,7 @@
       });
     }
   };
-  
+
   searchFilter.init();
-  
+
 })();

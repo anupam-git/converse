@@ -27,6 +27,7 @@ html, body {
 }
 
 .people-list {
+  padding: 20px;
   min-width: 260px;
   float: left;
 
@@ -35,7 +36,7 @@ html, body {
 	overflow-y: auto;
 }
 .people-list .search {
-  padding: 20px;
+	text-align: center;
 }
 .people-list input {
   border-radius: 3px;
@@ -43,15 +44,26 @@ html, body {
   padding: 14px;
   color: white;
   background: #6A6C75;
-  width: 90%;
+  width: 80%;
   font-size: 14px;
+	vertical-align: middle;
 }
 .people-list .fa-search {
   position: relative;
   left: -25px;
 }
+.people-list .fa-plus {
+	border-radius: 3px;
+	background: #6A6C75;
+	width: 44px;
+	height: 44px;
+	vertical-align: middle;
+	line-height: 44px;
+	cursor: pointer;
+}
+
 .people-list ul {
-  padding: 20px;
+  padding-top: 20px;
   /*height: 770px;*/
 }
 .people-list ul li {
@@ -79,19 +91,29 @@ html, body {
   border-bottom-right-radius: 5px;
   color: #434651;
 
+	display: flex;
+	flex-direction: column;
 	flex: 3;
 }
 .chat .chat-header {
-  padding: 20px;
+  padding-left: 20px;
+	height: 80px;
+	line-height: 80px;
   border-bottom: 2px solid white;
 }
 .chat .chat-header img {
-  float: left;
+  /*float: left;*/
+	height: 60px;
+	line-height: 80px;
+	border-radius: 100%;
+	vertical-align: middle;
 }
 .chat .chat-header .chat-about {
-  float: left;
+  /*float: left;*/
   padding-left: 10px;
-  margin-top: 6px;
+  /*margin-top: 6px;*/
+	display: inline-block;
+	vertical-align: middle;
 }
 .chat .chat-header .chat-with {
   font-weight: bold;
@@ -110,7 +132,9 @@ html, body {
   padding: 30px 30px 20px;
   border-bottom: 2px solid white;
   overflow-y: scroll;
-  height: 575px;
+  /*height: 575px;*/
+
+	flex: 1;
 }
 .chat .chat-history .message-data {
   margin-bottom: 15px;
@@ -152,6 +176,14 @@ html, body {
   border-bottom-color: #94C2ED;
   left: 93%;
 }
+
+.chat .chat-send-container {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
 .chat .chat-message {
   padding: 30px;
 }
