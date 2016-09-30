@@ -13,14 +13,16 @@ router.get('/', function(req, res, next) {
 			users = [{
 				name: "Probal Basak",
 				email: "probal@turret.in",
-				userid: "2"
+				userid: "2",
+				lang: "en"
 			}]
 		}
 		else if (req.session.email == "probal@turret.in") {
 			users = [{
 				name: "Anupam Basak",
 				email: "anupam@turret.in",
-				userid: "1"
+				userid: "1",
+				lang: "es"
 			}]
 		}
 
@@ -28,7 +30,8 @@ router.get('/', function(req, res, next) {
 			user: {
 				email: req.session.email,
 				name: req.session.name,
-				userid: req.session.userid
+				userid: req.session.userid,
+				lang: req.session.lang
 			},
 			chats: {
 				users: users

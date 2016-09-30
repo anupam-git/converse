@@ -19,7 +19,7 @@
 
 	      <ul class="list">
 					<% for (i=0; i<chats.users.length; i++) { %>
-		        <li class="clearfix active" data-pubnub-channel="chat-room">
+		        <li class="clearfix active" data-pubnub-channel="chat-room" data-lang="<%= chats.users[i].lang %>">
 		          <img src="/images/profile_pics/<%= chats.users[i].userid %>.jpg" alt="avatar" />
 		          <div class="about">
 		            <div class="name"><%= chats.users[i].name %></div>
@@ -90,6 +90,7 @@
 		<script>
 			var senderName = "<%= user.name %>";
 			var sender = "<%= user.userid %>";
+			var userLang = "<%= user.lang %>";
 			var pubnubFromChannels = $.map($("[data-pubnub-channel]"), (e) => { return $(e).attr("data-pubnub-channel") });
 		</script>
 

@@ -16,44 +16,21 @@ var express = require('express'),
 * Send Chat to User
 **/
 router.post("/send", function(req, res) {
-	language_translator.identify({
-		text: req.body.message
-	}, function(err, identifiedLanguages) {
-    if (err)
-      console.log(err)
-    else {
-			if (identifiedLanguages.languages[0].language !== "en") {
-				language_translator.translate({
-			    text: req.body.message+"",
-					source: identifiedLanguages.languages[0].language,
-			    target: 'en'
-			  }, function(err, translation) {console.log(translation.translations[0].translation);
-			    if (err) {
-			      console.log(err)
-					}
-			    else {
-						pubnub.publish({
-					    channel : req.body.to,
-					    message : {
-								data: translation.translations[0].translation,
-								dataOriginal: req.body.message,
-								senderName: req.body.senderName,
-								sender: req.body.sender
-							}
-						}, function(status, response) {
-							res.json({
-								status: "success",
-								response: response
-							})
-					  })
-					}
-				})
+	if (req.body.fromLang !== req.body.toLang) {
+		language_translator.translate({
+	    text: req.body.message,
+			source: req.body.fromLang,
+	    target: req.body.toLang
+	  }, function(err, translation) {
+	    if (err) {
+	      console.log(err)
 			}
-			else {
+	    else {
 				pubnub.publish({
-					channel : req.body.to,
-					message : {
-						data: req.body.message,
+			    channel : req.body.to,
+			    message : {
+						data: translation.translations[0].translation,
+						dataOriginal: req.body.message,
 						senderName: req.body.senderName,
 						sender: req.body.sender
 					}
@@ -62,10 +39,25 @@ router.post("/send", function(req, res) {
 						status: "success",
 						response: response
 					})
-				})
+			  })
 			}
-		}
-	});
+		})
+	}
+	else {
+		pubnub.publish({
+			channel : req.body.to,
+			message : {
+				data: req.body.message,
+				senderName: req.body.senderName,
+				sender: req.body.sender
+			}
+		}, function(status, response) {
+			res.json({
+				status: "success",
+				response: response
+			})
+		})
+	}
 })
 
 module.exports = router;

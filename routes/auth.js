@@ -40,6 +40,7 @@ router.post("/login", function(req, res, next) {
 		req.session.email = req.body.e;
 		req.session.name = "Anupam Basak";
 		req.session.userid = "1";
+		req.session.lang = "es";
 
 		res.redirect("/");
 	}
@@ -47,6 +48,7 @@ router.post("/login", function(req, res, next) {
 		req.session.email = req.body.e;
 		req.session.name = "Probal Basak";
 		req.session.userid = "2";
+		req.session.lang = "en";
 
 		res.redirect("/");
 	}

@@ -40,12 +40,13 @@
 					senderName: senderName,
           time: this.getCurrentTime()
         };
+				var toLang = this.$peopleList.find(".active").attr("data-lang");
 
         this.$chatHistoryList.append(template(context));
         this.scrollToBottom();
         this.$textarea.val('');
 
-				this.sendChatToServer(this.messageToSend, senderName);
+				this.sendChatToServer(this.messageToSend, senderName, toLang);
 				this.messageToSend = "";
       }
     },
@@ -71,13 +72,15 @@
     getRandomItem: function(arr) {
       return arr[Math.floor(Math.random()*arr.length)];
     },
-		sendChatToServer: function(message, senderName) {
+		sendChatToServer: function(message, senderName, toLang) {
 			$.ajax({
 				method: "post",
 				url: "/chat/send",
 				data: {
 					to: this.pubnubToChannel,
 					message: message,
+					fromLang: userLang,
+					toLang: toLang,
 					sender: sender,
 					senderName: senderName
 				}
