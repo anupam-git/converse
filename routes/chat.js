@@ -27,7 +27,7 @@ router.post("/send", function(req, res) {
 			    text: req.body.message+"",
 					source: identifiedLanguages.languages[0].language,
 			    target: 'en'
-			  }, function(err, translation) {console.log("Translating...");
+			  }, function(err, translation) {console.log(translation);
 			    if (err) {
 			      console.log(err)
 					}

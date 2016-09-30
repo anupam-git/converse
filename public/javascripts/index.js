@@ -1,13 +1,6 @@
 (function(){
   var chat = {
     messageToSend: '',
-		messageFrom: {
-			msg: "",
-			time: "",
-			senderName: "",
-			sender: "",
-			senderChannel: ""
-		},
 		pubnubToChannel: '',
     init: function() {
       this.cacheDOM();
@@ -55,27 +48,6 @@
 				this.sendChatToServer(this.messageToSend, senderName);
 				this.messageToSend = "";
       }
-			else if (this.messageFrom.msg.trim() !== '') {console.log("response", this.messageFrom.sender, sender);
-				if (this.messageFrom.sender !== sender) {
-					var templateResponse = Handlebars.compile( $("#message-response-template").html());
-	        var contextResponse = {
-	          senderName: this.messageFrom.senderName,
-	          time: this.messageFrom.time,
-						message: this.messageFrom.msg
-	        };
-
-	        this.$chatHistoryList.append(templateResponse(contextResponse));
-	        this.scrollToBottom();
-				}
-
-				this.messageFrom = {
-					msg: "",
-					time: "",
-					senderName: "",
-					sender: "",
-					senderChannel: ""
-				};
-			}
     },
 
     addMessage: function() {
@@ -124,15 +96,17 @@
 			var pubTT = m.timetoken;
 			var msg = m.message;
 
-			_this.messageFrom = {
-				msg: msg.data,
-				time: pubTT,
-				sender: msg.sender,
-				senderName: msg.senderName,
-				senderChannel: channelName
-			}
+			if (msg.sender !== sender) {
+				var templateResponse = Handlebars.compile( $("#message-response-template").html());
+				var contextResponse = {
+					senderName: msg.senderName,
+					time: pubTT,
+					message: msg.data
+				};
 
-			_this.render();
+				_this.$chatHistoryList.append(templateResponse(contextResponse));
+				_this.scrollToBottom();
+			}
 		}
   };
 
