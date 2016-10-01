@@ -2,7 +2,15 @@ var express = require('express');
 var router = express.Router();
 var User = require(__basedir+"/models/User");
 var mysql = require('mysql');
-var connection = mysql.createConnection({
+// var connection = mysql.createConnection({
+// 	host: "us-cdbr-iron-east-04.cleardb.net",
+// 	user: "b0c0e0e3cbf854",
+// 	password: "80204659",
+// 	database: "ad_a78324483943ab4",
+// 	debug: true
+// });
+
+var pool  = mysql.createPool({
 	host: "us-cdbr-iron-east-04.cleardb.net",
 	user: "b0c0e0e3cbf854",
 	password: "80204659",
@@ -21,26 +29,29 @@ router.get("/login", function(req, res, next) {
 * Authenticate User
 **/
 router.post("/login", function(req, res, next) {
-	connection.query('SELECT * FROM users WHERE email="'+req.body.e+'" AND password="'+req.body.p+'"', function(err, rows, fields) {
-		if (err) throw err;
+	pool.getConnection(function(err, connection) {
+		connection.query('SELECT * FROM users WHERE email="'+req.body.e+'" AND password="'+req.body.p+'"', function(err, rows, fields) {
+			if (err) throw err;
 
-		var user = rows[0];
+			var user = rows[0];
 
-		if (user === undefined) {
-			var error = new Error("Authentication Error");
-			error.status = 550;
+			if (user === undefined) {
+				var error = new Error("Authentication Error");
+				error.status = 550;
 
-			next(error);
-		}
-		else {
-			req.session.email = req.body.e;
-			req.session.name = user.name;
-			req.session.userid = user.userid;
-			req.session.lang = user.lang;
+				next(error);
+			}
+			else {
+				req.session.email = req.body.e;
+				req.session.name = user.name;
+				req.session.userid = user.userid;
+				req.session.lang = user.lang;
 
-			res.redirect("/");
-		}
-	});
+				res.redirect("/");
+			}
+		})
+	})
+
 
 	// User.authUser(req.body.e, req.body.p, function(user) {
 	//
