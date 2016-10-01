@@ -1,6 +1,7 @@
 {
   "name": "converse",
-  "version": "0.0.1",
+  "version": "0.2.0",
+	"description": "Facing issues while trying to chat/communicate with users around the world who speaks different languages? No worries. CONVERSE is here. Now let users chat in their own languages and Converse will translate the chats in real time and will translate to ones own language. So language is no more a barrier now. Converse is designed keeping in mind the issues faced while communicating with people around the world in MNCs and also by the Freelancers. It often becomes difficult to express ourselves to express our feeling or thoughts in a language other than the language we are comfortable with. Converse will really be helpful in those situations.",
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -18,5 +19,9 @@
     "serve-favicon": "~2.3.0",
     "watson-developer-cloud": "^2.4.5"
   },
-  "engine": "node 6.7.0"
+  "engine": "node 6.7.0",
+	"repository": {
+    "type": "git",
+    "url": "https://github.com/anupam-git/converse.git"
+  }
 }
