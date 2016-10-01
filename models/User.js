@@ -30,7 +30,5 @@ module.exports.authUser = function(email, password, cb) {
 	  if (err) throw err;
 
 	  return cb(rows[0]);
-
-		connection.end();
 	});
 }
