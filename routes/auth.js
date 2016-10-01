@@ -1,6 +1,14 @@
 var express = require('express');
 var router = express.Router();
-var User = require(__basedir+"/models/User")
+var User = require(__basedir+"/models/User");
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+	host: "us-cdbr-iron-east-04.cleardb.net",
+	user: "b0c0e0e3cbf854",
+	password: "80204659",
+	database: "ad_a78324483943ab4",
+	debug: true
+});
 
 /**
 * Return Rendered Login Page to User
@@ -13,15 +21,7 @@ router.get("/login", function(req, res, next) {
 * Authenticate User
 **/
 router.post("/login", function(req, res, next) {
-	var connection = mysql.createConnection({
-		host: "us-cdbr-iron-east-04.cleardb.net",
-		user: "b0c0e0e3cbf854",
-		password: "80204659",
-		database: "ad_a78324483943ab4",
-		debug: true
-	});
-
-	connection.query('SELECT * FROM users WHERE email="'+email+'" AND password="'+password+'"', function(err, rows, fields) {
+	connection.query('SELECT * FROM users WHERE email="'+req.body.e+'" AND password="'+req.body.p+'"', function(err, rows, fields) {
 		if (err) throw err;
 
 		var user = rows[0];
@@ -39,7 +39,8 @@ router.post("/login", function(req, res, next) {
 			req.session.lang = user.lang;
 
 			res.redirect("/");
-		}	});
+		}
+	});
 
 	// User.authUser(req.body.e, req.body.p, function(user) {
 	//
