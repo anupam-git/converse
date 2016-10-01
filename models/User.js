@@ -30,7 +30,7 @@ module.exports.authUser = function(email, password, cb) {
 	connection.query('SELECT * FROM users WHERE email="'+email+'" AND password="'+password+'"', function(err, rows, fields) {
 	  if (err) throw err;
 
-		connection.close();
+		connection.end();
 
 	  return cb(rows[0]);
 	});
