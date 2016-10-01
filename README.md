@@ -9,7 +9,6 @@ Converse is designed keeping in mind the issues faced while communicating with p
 
 It often becomes difficult to express ourselves to express our feeling or thoughts in a language other than the language we are comfortable with. Converse will really be helpful in those situations.
 
-
 ## Testing Guidelines
 
 Install Dependencies and Start Application
