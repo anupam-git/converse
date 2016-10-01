@@ -57,3 +57,10 @@ To test, open this url : http://localhost:3000(http://localhost:3000)
 * WATSON - Tone Analyzer
 * ClearDB - MySQL
 * PubNub
+
+
+# Future Scope
+
+* Realtime Audio Translation
+* Realtime Video Translation
+* Integration with Email Client

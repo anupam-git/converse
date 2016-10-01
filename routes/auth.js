@@ -13,7 +13,19 @@ router.get("/login", function(req, res, next) {
 * Authenticate User
 **/
 router.post("/login", function(req, res, next) {
-	User.authUser(req.body.e, req.body.p, function(user) {
+	var connection = mysql.createConnection({
+		host: "us-cdbr-iron-east-04.cleardb.net",
+		user: "b0c0e0e3cbf854",
+		password: "80204659",
+		database: "ad_a78324483943ab4",
+		debug: true
+	});
+
+	connection.query('SELECT * FROM users WHERE email="'+email+'" AND password="'+password+'"', function(err, rows, fields) {
+		if (err) throw err;
+
+		var user = rows[0];
+
 		if (user === undefined) {
 			var error = new Error("Authentication Error");
 			error.status = 550;
@@ -27,8 +39,11 @@ router.post("/login", function(req, res, next) {
 			req.session.lang = user.lang;
 
 			res.redirect("/");
-		}
-	})
+		}	});
+
+	// User.authUser(req.body.e, req.body.p, function(user) {
+	//
+	// })
 
 	// if (req.body.e == "anupam@turret.in" && req.body.p == "password") {
 	// 	req.session.email = req.body.e;
