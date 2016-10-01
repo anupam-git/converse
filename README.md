@@ -48,7 +48,7 @@ Start the Application
 npm start
 ```
 
-To test, open this url : http://localhost:3000(http://localhost:3000)
+To test, open this url in browser : http://localhost:3000
 
 # Bluemix Services Used
 
